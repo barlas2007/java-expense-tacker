@@ -59,3 +59,4 @@ public class Expense {
         return description + " | " + category + " | £" + amount;
     }
 }
+

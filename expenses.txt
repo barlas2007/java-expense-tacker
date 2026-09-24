@@ -1,6 +1,0 @@
-Gym,Health,25.99
-Train,Travel,8.2
-Lunch,Food,12.5
-Gym,Health,25.99
-Train,Travel,8.2
-Lunch,Food,12.5

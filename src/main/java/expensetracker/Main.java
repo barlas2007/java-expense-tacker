@@ -1,44 +1,31 @@
 package expensetracker;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
 
-        ExpenseTracker tracker = new ExpenseTracker();
+        ExpenseRepository expenseRepository =
+                new ExpenseRepository();
 
-        // Load anything saved from an earlier run
-        tracker.loadExpenses();
+        ExpenseTracker tracker =
+                new ExpenseTracker();
 
-        try {
+        List<Expense> databaseExpenses =
+                expenseRepository.findAll();
 
-            Expense gym =
-                    new Expense("Gym", "Health", 25.99);
-
-            Expense train =
-                    new Expense("Train", "Travel", 8.20);
-
-            Expense lunch =
-                    new Expense("Lunch", "Food", 12.50);
-
-            tracker.addExpense(gym);
-            tracker.addExpense(train);
-            tracker.addExpense(lunch);
-
-        } catch (InvalidExpenseException e) {
-
-            System.out.println(
-                    "Could not add expense: " + e.getMessage()
-            );
+        for (Expense expense : databaseExpenses) {
+            tracker.addExpense(expense);
         }
 
         System.out.println("\nAll expenses:");
         tracker.displayAllExpenses();
-
 
         System.out.println(
                 "\nCategories: " +
@@ -54,25 +41,39 @@ public class Main {
                 totals.entrySet()) {
 
             System.out.println(
-                    entry.getKey() +
-                            ": £" +
-                            entry.getValue()
+                    entry.getKey()
+                            + ": £"
+                            + entry.getValue()
             );
         }
 
-        tracker.saveExpenses();
+        System.out.println(
+                "\nEnter an expense to search for:"
+        );
 
-        System.out.println("enter a expense to search for: ");
-        String sExpense = scanner.nextLine();
+        String searchExpense =
+                scanner.nextLine();
 
-        tracker.searchExpense(sExpense);
+        tracker.searchExpense(searchExpense);
 
+        System.out.println("\nExpenses sorted by amount:");
         tracker.sortExpenses();
 
-        System.out.println("total spending : £" + tracker.totalSpending());
+        System.out.println(
+                "\nTotal spending: £"
+                        + tracker.totalSpending()
+        );
 
-        System.out.println("average spending : £" + tracker.averageSpending());
+        System.out.println(
+                "Average spending: £"
+                        + tracker.averageSpending()
+        );
 
-        System.out.println("highest spending : £" + tracker.highestSpending());
+        System.out.println(
+                "Highest spending: £"
+                        + tracker.highestSpending()
+        );
+
+        scanner.close();
     }
 }
